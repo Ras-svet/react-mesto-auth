@@ -35,7 +35,8 @@ function App() {
 	const navigate = useNavigate();
 
 	React.useEffect(() => {
-		Promise.all([api.getUserInfo(), api.getCards()])
+		if (isLoggedIn) {
+			Promise.all([api.getUserInfo(), api.getCards()])
 			.then(([userData, cards]) => {
 				setCurrentUser(userData)
 				setCards(cards)
@@ -43,7 +44,8 @@ function App() {
 			.catch(err => {
 				console.log(`Ошибка при отправке запроса ${err}`)
 			})
-	}, [])
+		}
+	}, [isLoggedIn])
 
 	React.useEffect(() => {
 		checkAuthorization();
@@ -82,13 +84,16 @@ function App() {
 	}
 
 	function checkAuthorization() {
-		if (localStorage.getItem('jwt')) {
-			const jwt = localStorage.getItem('jwt');
+		const jwt = localStorage.getItem('jwt');
+		if (jwt) {
 			auth.checkToken(jwt)
 			.then((res) => {
 				setEmail(res.data.email);
 				setIsLoggedIn(true);
 				navigate("/");
+			})
+			.catch(err => {
+				console.log(`Ошибка при отправке запроса ${err}`)
 			})
 		}
 	}
