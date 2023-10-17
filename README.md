@@ -31,4 +31,4 @@
 
 **Github Pages**
 
-* [Ссылка на github pages проекта](https://ras-svet.github.io/mesto-react/)
+* [Ссылка на github pages проекта](https://ras-svet.github.io/react-mesto-auth/)
